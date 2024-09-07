@@ -6,6 +6,7 @@ const pdf = require("pdf-parse");
 require("dotenv").config();
 const { CohereClient } = require("cohere-ai");
 const insertData = require("../utils/insertData");
+const authMiddleWare = require("../middleware/auth");
 
 const cohere = new CohereClient({
   token: process.env.COHERE_API_KEY || "",
@@ -15,6 +16,7 @@ const upload = multer({ storage: storage });
 
 router.post(
   "/retrieve-parsed-data",
+  authMiddleWare,
   upload.single("uploadedFile"),
   async (req, res) => {
     let resp = "";
