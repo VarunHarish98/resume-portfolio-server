@@ -1,20 +1,22 @@
-const { failureResponse, successResponse } = require("./utils");
-const { Details } = require("../models/resumeData");
+const supabase = require("../config/dbConnection");
 
-const insertData = async (data) => {
-  try {
-    let { name, ...details } = data;
-    details = JSON.stringify(details);
-    const resumeData = await Details.insertMany([{ name, details }]);
-
-    if (resumeData.insertedCount === 1) {
-      return successResponse;
-    }
-    return failureResponse;
-  } catch (error) {
+const insertData = async (response) => {
+  let name = response[0].name;
+  if (!name) console.error({ message: "Not able to get name" });
+  const { data, error } = await supabase
+    .from("user_data")
+    .insert([
+      {
+        user_name: name,
+        user_details: response,
+      },
+    ])
+    .select();
+  if (error) {
     console.error("Error inserting data:", error);
-    return failureResponse; 
   }
+  console.log(data);
+  return data;
 };
 
 module.exports = insertData;
