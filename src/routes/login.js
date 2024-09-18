@@ -18,7 +18,7 @@ router.post("/auth", async (req, res) => {
       password: password,
     });
     if (error) return res.status(401).json({ error: "Invalid credentials" });
-
+    const { data: user } = await supabase.auth.getUser();
     //Create a JWT for 1hr on trial basis
     const token = jwt.sign({ userId: data.user?.id }, JWT_SECRET, {
       expiresIn: "1hr",

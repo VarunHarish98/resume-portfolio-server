@@ -3,8 +3,7 @@ const { CohereClient } = require("cohere-ai");
 const { insertData } = require("./insertData");
 
 const cohere = new CohereClient({
-  token:
-    process.env.COHERE_API_KEY || "Kjc8Z7psEjg8zMu74Pu6WeSY6OBxkXpAFUyMw984",
+  token: process.env.COHERE_API_KEY,
 });
 const cohereResponse = async (data) => {
   let resp = "";

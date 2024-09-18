@@ -1,15 +1,18 @@
-const { default: supabase } = require("../config/dbConnection");
+const supabase = require("../config/dbConnection");
 
-export const retrieveData = async (template_id) => {
+const retrieveData = async (user) => {
+  if (!user) return "No user found";
   try {
     const { data, error } = await supabase
-      .from("template")
+      .from("user_data")
       .select("*")
-      .in("template_id", template_id);
-    if (error) return "No template found - Glitch from our end";
+      .eq("user_id", user);
+    if (error) return "No User found - Glitch from our end";
     console.log(data);
-    return data;
+    return data[0]?.user_details?.[0];
   } catch (error) {
     console.error(error);
   }
 };
+
+module.exports = retrieveData;
